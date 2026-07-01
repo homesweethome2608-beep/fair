@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Which Country Suits You Best? | Ivy Overseas</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+  
+  body {
+    min-height: 100dvh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: radial-gradient(circle at top left, #1a2a40, #0d1624, #060a11);
+    color: #ffffff;
+  }
+  
+  .container {
+    width: 100%;
+    max-width: 900px;
+    margin: auto;
+    text-align: center;
+  }
+
+  .brand-logo-container {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 15px 40px;
+    border-radius: 50px;
+    display: inline-block;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  }
+
+  .brand-logo {
+    max-height: 55px;
+    display: block;
+    width: auto;
+  }
+
+  .card-box {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 28px;
+    padding: 50px 40px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    animation: fadeInUp 0.6s ease-out;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero h1 {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    background: linear-gradient(90deg, #ffffff, #cbd5e1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1.25;
+  }
+
+  .hero p {
+    font-size: 17px;
+    font-weight: 300;
+    opacity: 0.85;
+    max-width: 650px;
+    margin: 0 auto 35px;
+    line-height: 1.6;
+  }
+
+  button {
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+  }
+
+  .cta-btn, .submit-btn {
+    padding: 18px 45px;
+    border-radius: 50px;
+    font-size: 18px;
+    color: white;
+    background: linear-gradient(135deg, #d32f2f, #b71c1c);
+    box-shadow: 0 8px 25px rgba(211, 47, 47, 0.4);
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .cta-btn:hover, .submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(211, 47, 47, 0.6);
+    background: linear-gradient(135deg, #e53935, #c62828);
+  }
+
+  .destinations-label {
+    margin-top: 45px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 20px;
+  }
+
+  .destinations-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    max-width: 750px;
+    margin: 0 auto;
+  }
+
+  .destination-pill {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-size: 15px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+  }
+
+  .destination-pill img {
+    width: 22px;
+    border-radius: 3px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+
+  .destination-pill:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+  }
+
+  .quiz-section, .loader, .lead-form, .result {
+    display: none;
+  }
+
+  .progress {
+    width: 100%;
+    max-width: 600px;
+    height: 8px;
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    margin: 0 auto 35px;
+  }
+
+  .progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #e53935, #d32f2f);
+    transition: width 0.4s ease;
+    border-radius: 30px;
+  }
+
+  .question {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 25px;
+    line-height: 1.4;
+  }
+
+  #optionsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    align-items: center;
+  }
+
+  .option {
+    width: 100%;
+    max-width: 550px;
+    padding: 20px 25px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    cursor: pointer;
+    font-size: 17px;
+    font-weight: 500;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .option:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-2px);
+  }
+
+  .spinner {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 25px;
+    border: 5px solid rgba(255, 255, 255, 0.1);
+    border-top: 5px solid #d32f2f;
+    border-radius: 50%;
+    animation: spin 1s cubic-bezier(0.55, 0.15, 0.45, 0.85) infinite;
+  }
+
+  @keyframes spin {
+    100% { transform: rotate(360deg); }
+  }
+
+  .lead-form p {
+    font-size: 16px;
+    opacity: 0.8;
+    margin-bottom: 25px !important;
+  }
+
+  input {
+    width: 100%;
+    max-width: 400px;
+    padding: 16px 20px;
+    margin: 12px auto;
+    display: block;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 14px;
+    color: white;
+    font-size: 16px;
+    outline: none;
+    transition: all 0.3s ease;
+  }
+
+  input:focus {
+    border-color: #d32f2f;
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  .result img.result-flag {
+    width: 90px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    margin-bottom: 20px;
+  }
+
+  .result h2 {
+    font-size: 48px;
+    margin-bottom: 15px;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+  }
+  
+  .result p.main-desc {
+    font-size: 17px;
+    line-height: 1.6;
+    opacity: 0.9;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .other-matches {
+    margin-top: 35px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+  }
+
+  .other-matches h4 {
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 15px;
+    text-align: center;
+  }
+
+  .runner-up {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 15px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 12px;
+    margin-bottom: 10px;
+  }
+
+  .runner-up-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  .runner-up-info img {
+    width: 30px;
+    border-radius: 4px;
+  }
+
+  .runner-up-score {
+    color: #93c5fd;
+    font-weight: 600;
+  }
+
+  #matchScore {
+    color: #4ade80;
+    font-weight: 700;
+    font-size: 26px;
+  }
+
+  @media (max-width: 768px) {
+    body { padding: 12px; }
+    .card-box { padding: 30px 20px; border-radius: 24px; }
+    .brand-logo { max-height: 40px; }
+    .brand-logo-container { padding: 12px 25px; margin-bottom: 20px; }
+    .hero h1 { font-size: 32px; }
+    .hero p { font-size: 15px; margin-bottom: 25px; }
+    .destinations-grid { gap: 8px; }
+    .destination-pill { padding: 8px 14px; font-size: 14px; }
+    .question { font-size: 22px; }
+    .option { padding: 16px; font-size: 15px; min-height: 65px; }
+    input { padding: 15px; font-size: 15px; }
+    .submit-btn, .cta-btn { font-size: 16px; padding: 16px; max-width: 100%; }
+    .result h2 { font-size: 36px; flex-direction: column; }
+    .result img.result-flag { width: 70px; margin-bottom: 10px; }
+    .result p.main-desc { font-size: 15px; }
+    .runner-up-info { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  
+  <section class="hero card-box" id="hero">
+    <div class="brand-logo-container">
+      <img src="https://www.ivyoverseas.com/newimg/ivy-overseas-logo.png" alt="Ivy Overseas" class="brand-logo" onerror="this.style.display='none';">
+    </div>
+    
+    <h1>Which Country Suits You Best?</h1>
+    <p>Take our highly accurate AI assessment. In just 60 seconds, discover the perfect study abroad destination based on your budget, goals, and profile.</p>
+
+    <button class="cta-btn" onclick="startQuiz()">Start Free Assessment</button>
+
+    <div class="destinations-label">Top Destinations We Cover</div>
+    <div class="destinations-grid">
+      <span class="destination-pill"><img src="https://flagcdn.com/w40/us.png" alt="USA"> USA</span>
+      <span class="destination-pill"><img src="https://flagcdn.com/w40/ca.png" alt="Canada"> Canada</span>
+      <span class="destination-pill"><img src="https://flagcdn.com/w40/gb.png" alt="UK"> UK</span>
+      <span class="destination-pill"><img src="https://flagcdn.com/w40/au.png" alt="Australia"> Australia</span>
+      <span class="destination-pill"><img src="https://flagcdn.com/w40/nz.png" alt="New Zealand"> New Zealand</span>
+      <span class="destination-pill"><img src="https://flagcdn.com/w40/de.png" alt="Germany"> Germany</span>
+      <span class="destination-pill"><img src="https://flagcdn.com/w40/ie.png" alt="Ireland"> Ireland</span>
+      <span class="destination-pill"><img src="https://flagcdn.com/w40/fr.png" alt="France"> France</span>
+      <span class="destination-pill"><img src="https://flagcdn.com/w40/ch.png" alt="Switzerland"> Switzerland</span>
+      <span class="destination-pill"><img src="https://flagcdn.com/w40/se.png" alt="Sweden"> Sweden</span>
+      <span class="destination-pill"><img src="https://flagcdn.com/w40/dk.png" alt="Denmark"> Denmark</span>
+      <span class="destination-pill"><img src="https://flagcdn.com/w40/ae.png" alt="Dubai"> Dubai</span>
+    </div>
+  </section>
+
+  <section class="quiz-section card-box" id="quizSection">
+    <div class="progress">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <h2 class="question" id="questionText"></h2>
+    <div id="optionsContainer"></div>
+  </section>
+
+  <section class="loader card-box" id="loader">
+    <div class="spinner"></div>
+    <h2 style="margin-bottom: 10px;">Analyzing Your Profile...</h2>
+    <p id="loaderText" style="opacity: 0.8;">Ranking top 3 global destinations...</p>
+  </section>
+
+  <section class="lead-form card-box" id="leadForm">
+    <h2 style="font-size: 28px; margin-bottom: 10px;">We Found Your Matches! 🎯</h2>
+    <p>Enter your details to unlock your top 3 recommended countries.</p>
+
+    <!-- Form Inputs with clear placeholders indicating formatting rules -->
+    <input id="name" type="text" placeholder="Full Name (Letters only)" required>
+    <input id="phone" type="tel" placeholder="10-Digit Phone Number" maxlength="10" required>
+    <input id="email" type="email" placeholder="Email Address" required>
+    <input id="degree" type="text" placeholder="Degree & Passout Year (e.g., BBA - 2026)" required>
+    <input id="city" type="text" placeholder="City (e.g., Hyderabad)" required>
+
+    <button class="submit-btn" onclick="submitLead()">Reveal My Top 3 Matches</button>
+  </section>
+
+  <section class="result card-box" id="result">
+    <!-- Top Country Result -->
+    <div id="countryResultContainer"></div>
+    <p id="countryDescription" class="main-desc"></p>
+    <h3 style="margin-top: 20px;">
+      Primary Match Score: <span id="matchScore">96%</span>
+    </h3>
+
+    <!-- 2nd and 3rd Priority Countries -->
+    <div class="other-matches" id="otherMatchesContainer">
+       <h4>Other Excellent Matches</h4>
+       <div id="runnerUp1" class="runner-up"></div>
+       <div id="runnerUp2" class="runner-up"></div>
+    </div>
+
+    <!-- Zoho Booking Redirect -->
+    <button class="cta-btn" style="margin-top: 30px;" onclick="window.location.href='https://forms.zohopublic.in/ivyoverseas/form/BookFreeCounselling/formperma/Eaw0jlIr7zrWjkbXViJLUjBqhfdjJSs8U5Z97MOrusE'">
+      Book Free Counseling
+    </button>
+  </section>
+  
+  <script>
+    let currentStep = 0;
+    let answers = {};
+    
+    // Variables for the top 3 results
+    let topPriorityCountry = "";
+    let recommendedFlagHTML = "";
+    let finalDescription = "";
+    
+    let runnerUp1HTML = "";
+    let runnerUp2HTML = "";
+    let stringForDatabase = ""; // "1. USA, 2. UK, 3. Canada"
+
+    const questions = [
+      {
+        question: "What is your total budget for tuition & living?",
+        key: "budget",
+        options: [
+          ["Below ₹15–20 Lakhs (Need affordable options)", "low"],
+          ["₹20–35 Lakhs (Moderate budget)", "mid"],
+          ["Above ₹40 Lakhs (Flexible budget)", "high"]
+        ]
+      },
+      {
+        question: "What is your primary goal after graduation?",
+        key: "goal",
+        options: [
+          ["Permanent Residency (PR) & Settling", "pr"],
+          ["Max ROI & High-Paying Job", "job"],
+          ["Quick 1-Year Master's Degree", "quick"],
+          ["Research / PhD / Academic Focus", "research"]
+        ]
+      },
+      {
+        question: "Which region excites you the most?",
+        key: "continent",
+        options: [
+          ["North America (USA/Canada)", "america"],
+          ["Europe & UK (Tech & Culture)", "europe"],
+          ["Oceania (Australia/NZ)", "oceania"],
+          ["Middle East (Tax-Free & Close to Home)", "middleeast"],
+          ["Open to anywhere based on my profile", "any"]
+        ]
+      },
+      {
+        question: "What is your English proficiency level?",
+        key: "english",
+        options: [
+          ["I have my IELTS / PTE / TOEFL Scores Ready", "ready"],
+          ["I need IELTS / PTE / TOEFL Coaching", "coaching"],
+          ["I am willing to learn a foreign language (German/French)", "language"]
+        ]
+      },
+      {
+        question: "Which field are you planning to study?",
+        key: "course",
+        options: [
+          ["STEM (Engineering, IT, Data)", "engineering"],
+          ["Business, MBA or Management", "business"],
+          ["Healthcare, Pharma or Sciences", "healthcare"],
+          ["Arts, Design or Humanities", "arts"]
+        ]
+      },
+      {
+        question: "What is your academic score (CGPA/Percentage)?",
+        key: "cgpa",
+        options: [
+          ["75% and above (High Academics)", "high"],
+          ["60% – 75% (Average Academics)", "mid"],
+          ["Below 60% (Need flexible admissions)", "low"]
+        ]
+      },
+      {
+        question: "Do you have full-time work experience?",
+        key: "experience",
+        options: [
+          ["No, I am a Fresher", "none"],
+          ["1 – 3 Years", "mid"],
+          ["3+ Years", "high"]
+        ]
+      }
+    ];
+
+    function startQuiz() {
+      document.getElementById("hero").style.display = "none";
+      document.getElementById("quizSection").style.display = "block";
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      let q = questions[currentStep];
+      document.getElementById("questionText").innerText = q.question;
+
+      let html = "";
+      q.options.forEach(opt => {
+        html += `<div class="option" onclick="selectOption('${q.key}','${opt[1]}')">${opt[0]}</div>`;
+      });
+
+      document.getElementById("optionsContainer").innerHTML = html;
+      
+      setTimeout(() => {
+        document.getElementById("progressBar").style.width = ((currentStep + 1) / questions.length) * 100 + "%";
+      }, 50);
+    }
+
+    function selectOption(key, value) {
+      answers[key] = value;
+      currentStep++;
+
+      if (currentStep < questions.length) {
+        const container = document.getElementById("optionsContainer");
+        const title = document.getElementById("questionText");
+        
+        container.style.animation = 'none';
+        title.style.animation = 'none';
+        container.offsetHeight; 
+        title.offsetHeight;
+        
+        container.style.animation = 'fadeInUp 0.3s ease-out';
+        title.style.animation = 'fadeInUp 0.3s ease-out';
+        
+        renderQuestion();
+      } else {
+        document.getElementById("quizSection").style.display = "none";
+        showLoader();
+      }
+    }
+
+    function showLoader() {
+      document.getElementById("loader").style.display = "block";
+
+      setTimeout(() => {
+        document.getElementById("loader").style.display = "none";
+        document.getElementById("leadForm").style.display = "block";
+      }, 3500);
+    }
+
+    function calculateTop3Countries() {
+      let scores = {
+        USA: 0, Canada: 0, UK: 0, Australia: 0, NewZealand: 0,
+        Germany: 0, Ireland: 0, France: 0, Switzerland: 0,
+        Sweden: 0, Denmark: 0, Dubai: 0
+      };
+
+      const { budget, goal, continent, english, course, cgpa, experience } = answers;
+
+      // 1. Budget Logic 
+      if(budget === "low") { 
+        scores.Germany += 10; scores.France += 8; scores.Sweden += 5; scores.Denmark += 5;
+        scores.USA -= 10; scores.Australia -= 10; scores.Switzerland -= 10; 
+      }
+      if(budget === "mid") { 
+        scores.Canada += 6; scores.Ireland += 6; scores.NewZealand += 6; scores.Dubai += 6; scores.UK += 5; scores.France += 4;
+      }
+      if(budget === "high") { 
+        scores.USA += 8; scores.Australia += 8; scores.Switzerland += 8; scores.UK += 6; 
+      }
+
+      // 2. Goal Logic
+      if(goal === "pr") { scores.Canada += 8; scores.Australia += 7; scores.NewZealand += 7; scores.Germany += 5; scores.Ireland += 4; scores.Dubai -= 5; }
+      if(goal === "job") { scores.USA += 8; scores.Dubai += 8; scores.Ireland += 6; scores.Australia += 5; }
+      if(goal === "quick") { scores.UK += 10; scores.Ireland += 8; scores.France += 4; scores.USA -= 5; }
+      if(goal === "research") { scores.USA += 7; scores.Germany += 7; scores.UK += 5; scores.Sweden += 5; scores.Switzerland += 5; }
+
+      // 3. English/Language Logic 
+      if(english === "coaching") { 
+        scores.Dubai += 5; scores.UK += 3; (budget === "high" ? scores.USA += 2 : null); scores.Germany -= 3; 
+      }
+      if(english === "language") { scores.Germany += 12; scores.France += 10; scores.Sweden += 5; scores.Denmark += 5; }
+      if(english === "ready") { scores.USA += 4; scores.Canada += 4; scores.Australia += 4; scores.NewZealand += 3; scores.Ireland += 3; }
+
+      // 4. Continent Bias
+      if(continent === "europe") { scores.UK+=8; scores.Germany+=8; scores.Ireland+=8; scores.France+=8; scores.Switzerland+=8; scores.Sweden+=8; scores.Denmark+=8; }
+      if(continent === "america") { scores.USA += 10; scores.Canada += 10; }
+      if(continent === "oceania") { scores.Australia += 10; scores.NewZealand += 10; }
+      if(continent === "middleeast") { scores.Dubai += 15; }
+
+      // 5. Course Preference
+      if(course === "engineering") { scores.Germany += 6; scores.USA += 6; scores.Sweden += 4; scores.Ireland += 4; }
+      if(course === "business") { scores.UK += 6; scores.France += 6; scores.Switzerland += 6; scores.USA += 4; scores.Dubai += 5; }
+      if(course === "healthcare") { scores.UK += 5; scores.Australia += 5; scores.Ireland += 5; scores.Canada += 4; }
+      if(course === "arts") { scores.France += 7; scores.UK += 5; scores.USA += 3; scores.Denmark += 4; }
+
+      // 6. Academic Background
+      if(cgpa === "high") { scores.USA += 4; scores.Germany += 5; scores.Switzerland += 4; scores.UK += 3; }
+      if(cgpa === "mid") { scores.Canada += 3; scores.Australia += 3; scores.Ireland += 3; scores.NewZealand += 3; }
+      if(cgpa === "low") { scores.Dubai += 6; scores.UK += 2; scores.France += 2; scores.Germany -= 5; scores.USA -= 5; }
+
+      // 7. Experience
+      if(experience === "high") { scores.USA += 4; scores.UK += 4; scores.Switzerland += 4; scores.France += 3; }
+      if(experience === "none") { scores.Canada += 2; scores.Australia += 2; scores.Germany += 2; }
+
+      // Sort countries based on score in descending order
+      let sortedCountries = Object.keys(scores).sort((a, b) => scores[b] - scores[a]);
+      
+      const top1 = sortedCountries[0];
+      const top2 = sortedCountries[1];
+      const top3 = sortedCountries[2];
+
+      const descriptions = {
+        USA: "With massive STEM opportunities, OPT extensions, and world-class universities, the USA is perfect for high ROI and career growth.",
+        Canada: "Famous for its welcoming culture, diverse campuses, and some of the clearest, most straightforward pathways to Permanent Residency.",
+        UK: "Offers prestigious intensive 1-year master's programs and a 2-year post-study work visa, perfect for fast-tracking your career.",
+        Australia: "Boasts an incredible lifestyle, high minimum wages, and excellent post-study work rights in a safe, vibrant environment.",
+        NewZealand: "Provides a brilliant balance of high-quality education, beautiful landscapes, and favorable immigration policies.",
+        Germany: "The ultimate hub for Engineering and IT. Features zero to very low tuition fees at public universities and a strong economy.",
+        Ireland: "Known as the 'Silicon Valley of Europe', offering massive tech job opportunities and up to 2 years of post-study work rights.",
+        France: "World-renowned for Business, Luxury Management, and Arts. Offers generous government subsidies for international students.",
+        Switzerland: "The global gold standard for Business and Hospitality. Offers incredibly high living standards and premium education.",
+        Sweden: "A powerhouse of innovation and sustainability. Home to global tech giants and offers a highly progressive education system.",
+        Denmark: "Renowned for its high quality of life, green energy focus, and an education system that prioritizes practical, innovative learning.",
+        Dubai: "A fast-growing dynamic global hub offering 100% tax-free income, high ROI, and proximity to home."
+      };
+
+      const flags = {
+        USA: "https://flagcdn.com/w160/us.png", 
+        Canada: "https://flagcdn.com/w160/ca.png", 
+        UK: "https://flagcdn.com/w160/gb.png", 
+        Australia: "https://flagcdn.com/w160/au.png", 
+        NewZealand: "https://flagcdn.com/w160/nz.png", 
+        Germany: "https://flagcdn.com/w160/de.png", 
+        Ireland: "https://flagcdn.com/w160/ie.png", 
+        France: "https://flagcdn.com/w160/fr.png", 
+        Switzerland: "https://flagcdn.com/w160/ch.png", 
+        Sweden: "https://flagcdn.com/w160/se.png", 
+        Denmark: "https://flagcdn.com/w160/dk.png", 
+        Dubai: "https://flagcdn.com/w160/ae.png"
+      };
+
+      // Helper function to format display names
+      const getName = (c) => c === 'NewZealand' ? 'New Zealand' : c;
+
+      const name1 = getName(top1);
+      const name2 = getName(top2);
+      const name3 = getName(top3);
+
+      // Generate HTML blocks
+      topPriorityCountry = name1;
+      recommendedFlagHTML = `<img src="${flags[top1]}" alt="${name1} Flag" class="result-flag"><br><h2>${name1}</h2>`;
+      finalDescription = descriptions[top1];
+
+      // Simulated matching percentages for UI
+      const score1 = Math.floor(Math.random() * 5) + 94; // 94-98%
+      const score2 = score1 - (Math.floor(Math.random() * 4) + 4); // 86-90%
+      const score3 = score2 - (Math.floor(Math.random() * 4) + 5); // 77-85%
+
+      document.getElementById("matchScore").innerText = score1 + "%";
+
+      runnerUp1HTML = `
+        <div class="runner-up-info">
+          <img src="${flags[top2]}" alt="${name2}">
+          <span>${name2}</span>
+        </div>
+        <div class="runner-up-score">${score2}% Match</div>
+      `;
+
+      runnerUp2HTML = `
+        <div class="runner-up-info">
+          <img src="${flags[top3]}" alt="${name3}">
+          <span>${name3}</span>
+        </div>
+        <div class="runner-up-score">${score3}% Match</div>
+      `;
+
+      // Database string formatting
+      stringForDatabase = `1. ${name1}, 2. ${name2}, 3. ${name3}`;
+    }
+    
+    function submitLead() {
+      const name = document.getElementById("name").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const degree = document.getElementById("degree").value.trim();
+      const city = document.getElementById("city").value.trim();
+
+      // STRICT VALIDATION REGEX
+      const nameRegex = /^[a-zA-Z\s]+$/;         // Only alphabets and spaces
+      const phoneRegex = /^\d{10}$/;             // Exactly 10 digits
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email structure
+      const cityRegex = /^[a-zA-Z\s]+$/;         // Only alphabets and spaces for Indian cities
+
+      // VALIDATION CHECKS
+      if (!name || !nameRegex.test(name)) {
+        alert("Please enter a valid Name (Letters only, no special characters or numbers).");
+        return;
+      }
+      if (!phone || !phoneRegex.test(phone)) {
+        alert("Please enter a valid 10-digit Phone Number.");
+        return;
+      }
+      if (!email || !emailRegex.test(email)) {
+        alert("Please enter a valid Email Address.");
+        return;
+      }
+      if (!degree) {
+        alert("Please enter your Degree and Passout Year (e.g., BBA - 2026).");
+        return;
+      }
+      if (!city || !cityRegex.test(city)) {
+        alert("Please enter a valid City Name (Letters only).");
+        return;
+      }
+
+      const submitBtn = document.querySelector('.submit-btn');
+      submitBtn.innerText = "Ranking Top Destinations...";
+      submitBtn.disabled = true;
+
+      // Calculate the results right before submitting
+      calculateTop3Countries();
+
+      const leadData = {
+        name, phone, email, degree, city,
+        needs_coaching: answers.english === "coaching" ? "YES" : "NO",
+        quiz_answers: answers,
+        top_3_countries: stringForDatabase, 
+        timestamp: new Date().toISOString()
+      };
+
+      // ==========================================
+      // GOOGLE SHEETS INTEGRATION
+      // Replace with your Google Apps Script Web App URL
+      // ==========================================
+      const GOOGLE_SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE';
+      
+      fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(leadData)
+      })
+      .then(() => {
+        showResults();
+      })
+      .catch(error => {
+        console.error("Error saving lead:", error);
+        showResults();
+      });
+    }
+
+    function showResults() {
+      document.getElementById("leadForm").style.display = "none";
+      document.getElementById("result").style.display = "block";
+
+      // Injecting Top 1 Country Data
+      document.getElementById("countryResultContainer").innerHTML = recommendedFlagHTML;
+      document.getElementById("countryDescription").innerText = finalDescription;
+
+      // Injecting Runner-up Countries
+      document.getElementById("runnerUp1").innerHTML = runnerUp1HTML;
+      document.getElementById("runnerUp2").innerHTML = runnerUp2HTML;
+    }
+  </script>
+</div>
+
+</body>
+</html>
