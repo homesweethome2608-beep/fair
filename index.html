@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Which Country Suits You Best? | Ivy Overseas</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
@@ -25,7 +25,7 @@
   }
   
   html, body {
-    max-width: 100%;
+    width: 100%;
     overflow-x: hidden;
   }
   
@@ -65,6 +65,7 @@
     padding: 50px 40px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
     animation: fadeInUp 0.6s ease-out;
+    width: 100%;
   }
 
   @keyframes fadeInUp {
@@ -250,7 +251,7 @@
     border: 2px solid var(--border-color);
     border-radius: 12px;
     color: var(--text-main);
-    font-size: 15px;
+    font-size: 16px; /* Set to 16px to prevent iOS auto-zoom */
     outline: none;
     transition: all 0.3s ease;
   }
@@ -280,6 +281,7 @@
     position: relative;
     box-shadow: 0 15px 35px rgba(0, 166, 81, 0.1);
     margin-bottom: 30px;
+    width: 100%;
   }
 
   .badge-gold {
@@ -295,6 +297,7 @@
     font-weight: 700;
     box-shadow: 0 4px 10px rgba(253, 160, 133, 0.3);
     letter-spacing: 0.5px;
+    white-space: nowrap;
   }
 
   .top-match-card img.result-flag {
@@ -414,14 +417,46 @@
     border-radius: 10px;
   }
 
+  /* =========================================
+     EXTREME MOBILE RESPONSIVENESS
+  ========================================= */
   @media (max-width: 768px) {
-    body { padding: 12px; }
-    .card-box { padding: 35px 20px; border-radius: 20px; }
-    .brand-logo { max-height: 50px; }
-    .hero h1 { font-size: 28px; }
+    body { padding: 15px; }
+    .card-box { padding: 40px 20px; border-radius: 20px; }
+    .brand-logo { max-height: 60px; }
+    .hero h1 { font-size: 32px; }
+    .hero p { font-size: 15px; margin-bottom: 25px; }
+    .destinations-grid { gap: 10px; }
+    .destination-pill { padding: 8px 16px; font-size: 13px; }
+    .question { font-size: 22px; }
+    .option { padding: 16px; font-size: 15px; }
+    input, select { padding: 14px; }
+    .submit-btn, .cta-btn { max-width: 100%; } /* Buttons span full width on tablet/mobile */
     .top-match-card h2 { font-size: 36px; }
     .runner-up-card { padding: 12px 15px; }
     .runner-up-info { font-size: 16px; gap: 10px; }
+  }
+
+  /* Small Phones (iPhone SE, older models) */
+  @media (max-width: 480px) {
+    body { padding: 10px; }
+    .card-box { padding: 30px 15px; }
+    .brand-logo { max-height: 50px; margin-bottom: 15px; }
+    .hero h1 { font-size: 28px; }
+    .hero p { font-size: 14px; }
+    .destination-pill { padding: 6px 12px; font-size: 12px; }
+    .question { font-size: 20px; }
+    .option { font-size: 14px; padding: 14px; }
+    .lead-form h2 { font-size: 24px; }
+    .lead-form p { font-size: 14px; }
+    .top-match-card h2 { font-size: 30px; }
+    .top-match-card img.result-flag { width: 80px; }
+    .score-text { font-size: 18px; }
+    .top-match-card p.main-desc { font-size: 14px; }
+    .runner-up-info { font-size: 14px; }
+    .runner-up-info img { width: 28px; }
+    .runner-score-mini span { font-size: 13px; }
+    .mini-bar-bg { width: 50px; }
   }
 </style>
 </head>
@@ -471,7 +506,7 @@
   </section>
 
   <section class="lead-form card-box" id="leadForm">
-    <h2 style="font-size: 28px; margin-bottom: 10px; color: var(--text-main);">We Found Your Matches! 🎯</h2>
+    <h2 style="margin-bottom: 10px; color: var(--text-main);">We Found Your Matches! 🎯</h2>
     <p style="color: var(--text-muted); margin-bottom: 25px;">Enter your details to unlock your top 3 recommended countries.</p>
 
     <input id="name" type="text" placeholder="Full Name (Letters only)" required>
@@ -772,7 +807,7 @@
 
       generateResultsUI();
 
-      const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby6hEG_90fx7pQ8QncWpPqI5aMNqN1oUlzXG9D4OVTWFZ9Su4_LSJ_RUWAUhP5RKw/exec';
+      const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyylRVf2EergtFeNBRjmp4fesN88UpK9lFldXSmQSDSAa5K0DQqQD4yqZLD4x-sF1H6XA/exec';
       
       const formData = new URLSearchParams();
       formData.append("Name", name);
