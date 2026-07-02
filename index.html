@@ -266,7 +266,7 @@
   }
 
   /* =========================================
-     NEW RESULT PAGE UI / UX STYLES
+     RESULT PAGE UI / UX STYLES
   ========================================= */
   .result {
     padding: 40px 20px;
@@ -414,11 +414,25 @@
     border-radius: 10px;
   }
 
+  /* =========================================
+     MOBILE RESPONSIVENESS UPDATES
+  ========================================= */
   @media (max-width: 768px) {
     body { padding: 12px; }
     .card-box { padding: 35px 20px; border-radius: 20px; }
+    
+    /* Reduced spacing between logo and heading on mobile */
+    .brand-logo-container { padding: 5px; margin-bottom: 5px; }
     .brand-logo { max-height: 50px; }
-    .hero h1 { font-size: 28px; }
+    .hero h1 { font-size: 28px; margin-bottom: 10px; }
+    .hero p { font-size: 14px; margin-bottom: 25px; }
+    
+    .destinations-grid { gap: 8px; }
+    .destination-pill { padding: 8px 14px; font-size: 13px; }
+    .question { font-size: 22px; }
+    .option { padding: 16px; font-size: 15px; min-height: 65px; }
+    input, select { padding: 15px; font-size: 15px; }
+    .submit-btn, .cta-btn { font-size: 16px; padding: 16px; max-width: 100%; }
     .top-match-card h2 { font-size: 36px; }
     .runner-up-card { padding: 12px 15px; }
     .runner-up-info { font-size: 16px; gap: 10px; }
@@ -772,7 +786,7 @@
 
       generateResultsUI();
 
-      const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxhhmtRS8jX7kc2zUrpXJ4GLBLNUwwGEQTOZxEzyqMlhK7gpLDtsN_4AOapn4We6jM/exec';
+      const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby6hEG_90fx7pQ8QncWpPqI5aMNqN1oUlzXG9D4OVTWFZ9Su4_LSJ_RUWAUhP5RKw/exec';
       
       const formData = new URLSearchParams();
       formData.append("Name", name);
